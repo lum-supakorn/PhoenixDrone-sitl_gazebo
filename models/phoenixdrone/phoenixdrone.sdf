@@ -220,12 +220,12 @@
         </inertia>
       </inertial>
       <visual name="left_elevon_visual">
-		<pose>0 0.0 0.0 0 0 0</pose>
-		<geometry>
-		  <box>
-		    <size> 0.015 0.22 0.07347</size>
-		  </box>
-		</geometry>
+		    <pose>0 0.0 0.0 0 0 0</pose>
+		    <geometry>
+		      <box>
+		        <size> 0.015 0.22 0.07347</size>
+		      </box>
+		    </geometry>
       </visual>
     </link>
     <link name="right_elevon">
@@ -241,14 +241,14 @@
           <izz>0.000001</izz>
         </inertia>
       </inertial>
-     <visual name="left_elevon_visual">
-		<pose>0 -0.0 0.0 0 0 0</pose>
-		<geometry>
-	  	<box>
-	    	<size> 0.015  0.22 0.07347</size>
-	  	</box>
-		</geometry>
-     </visual>
+      <visual name="right_elevon_visual">
+		    <pose>0 -0.0 0.0 0 0 0</pose>
+		    <geometry>
+	  	    <box>
+	    	    <size> 0.015  0.22 0.07347</size>
+	  	    </box>
+		    </geometry>
+      </visual>
     </link>
     <joint name='left_elevon_joint' type='revolute'>
       <parent>base_link</parent>
