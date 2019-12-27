@@ -193,19 +193,28 @@ void GazeboMotorModel::UpdateForcesAndMoments() {
   double real_motor_velocity = motor_rot_vel_ * rotor_velocity_slowdown_sim_;
   double force = real_motor_velocity * real_motor_velocity * motor_constant_;
 
-  // scale down force linearly with forward speed
-  // XXX this has to be modelled better
-  //
-#if GAZEBO_MAJOR_VERSION >= 9
-  ignition::math::Vector3d body_velocity = link_->WorldLinearVel();
-#else
-  ignition::math::Vector3d body_velocity = ignitionFromGazeboMath(link_->GetWorldLinearVel());
-#endif
-  double vel = body_velocity.Length();
-  double scalar = 1 - vel / 25.0; // at 50 m/s the rotor will not produce any force anymore
-  scalar = ignition::math::clamp(scalar, 0.0, 1.0);
+  // TODO(ff): remove this?
+  // Code from sitl_gazebo version of GazeboMotorModel.
+  // Not active as model is imprecise, and does not take
+  // into account the direction of the wind (e.g. is it moving
+  // in the direction of propulsion, against?)
+  #if 0
+    // scale down force linearly with forward speed
+    // XXX this has to be modelled better
+    //
+    #if GAZEBO_MAJOR_VERSION >= 9
+      ignition::math::Vector3d body_velocity = link_->WorldLinearVel();
+    #else
+      ignition::math::Vector3d body_velocity = ignitionFromGazeboMath(link_->GetWorldLinearVel());
+    #endif
+    double vel = body_velocity.Length();
+    double scalar = 1 - vel / 25.0; // at 50 m/s the rotor will not produce any force anymore
+    scalar = ignition::math::clamp(scalar, 0.0, 1.0);
+    // Apply a force to the link.
+    link_->AddRelativeForce(ignition::math::Vector3d(0, 0, force * scalar));
+  #endif
   // Apply a force to the link.
-  link_->AddRelativeForce(ignition::math::Vector3d(0, 0, force * scalar));
+  link_->AddRelativeForce(ignition::math::Vector3d(0, 0, force));  
 
   // Forces from Philppe Martin's and Erwan Salaün's
   // 2010 IEEE Conference on Robotics and Automation paper
@@ -216,7 +225,7 @@ void GazeboMotorModel::UpdateForcesAndMoments() {
 #else
   ignition::math::Vector3d joint_axis = ignitionFromGazeboMath(joint_->GetGlobalAxis(0));
 #endif
-  //ignition::math::Vector3d body_velocity = link_->WorldLinearVel();
+  ignition::math::Vector3d body_velocity = link_->WorldLinearVel();
   ignition::math::Vector3d body_velocity_perpendicular = body_velocity - (body_velocity * joint_axis) * joint_axis;
   ignition::math::Vector3d air_drag = -std::abs(real_motor_velocity) * rotor_drag_coefficient_ * body_velocity_perpendicular;
   // Apply air_drag to link.
