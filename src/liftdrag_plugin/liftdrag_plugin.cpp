@@ -166,12 +166,18 @@ void LiftDragPlugin::Load(physics::ModelPtr _model,
 void LiftDragPlugin::OnUpdate()
 {
   GZ_ASSERT(this->link, "Link was NULL");
+
+  // pose of body
+  ignition::math::Pose3d pose = this->link->WorldPose();
   // get linear velocity at cp in inertial frame
 #if GAZEBO_MAJOR_VERSION >= 9
   ignition::math::Vector3d vel = this->link->WorldLinearVel(this->cp);
 #else
   ignition::math::Vector3d vel = ignitionFromGazeboMath(this->link->GetWorldLinearVel(this->cp));
 #endif
+  ignition::math::Vector3d downwash(0, 0, 15);
+  ignition::math::Vector3d downwash_I = pose.Rot().RotateVector(downwash);
+  vel = vel + downwash_I; 
   ignition::math::Vector3d velI = vel;
   velI.Normalize();
 
@@ -184,11 +190,12 @@ void LiftDragPlugin::OnUpdate()
     return;
 
   // pose of body
+/* Get from above
 #if GAZEBO_MAJOR_VERSION >= 9
   ignition::math::Pose3d pose = this->link->WorldPose();
 #else
   ignition::math::Pose3d pose = ignitionFromGazeboMath(this->link->GetWorldPose());
-#endif
+#endif*/
 
   // rotate forward and upward vectors into inertial frame
   ignition::math::Vector3d forwardI = pose.Rot().RotateVector(this->forward);
