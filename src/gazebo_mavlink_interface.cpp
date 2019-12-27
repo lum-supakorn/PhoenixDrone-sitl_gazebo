@@ -181,6 +181,216 @@ void GazeboMavlinkInterface::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf
     }
   }
 
+  if (_sdf->HasElement("left_elevon_joint")) {
+    sdf::ElementPtr left_elevon =  _sdf->GetElement("left_elevon_joint");
+    std::string left_elevon_joint_name = left_elevon->Get<std::string>();
+    left_elevon_joint_ = model_->GetJoint(left_elevon_joint_name);
+    int control_index;
+    getSdfParam<int>(left_elevon, "input_index", control_index, -1);
+    if (control_index >= 0) {
+      joints_.at(control_index) = left_elevon_joint_;
+    }
+    // setup pid to control joint
+    use_left_elevon_pid_ = false;
+    if (left_elevon->HasElement("joint_control_pid")) {
+      // setup joint control pid to control joint
+      sdf::ElementPtr pid = _sdf->GetElement("joint_control_pid");
+      double p = 0.1;
+      if (pid->HasElement("p"))
+        p = pid->Get<double>("p");
+      double i = 0;
+      if (pid->HasElement("i"))
+        i = pid->Get<double>("i");
+      double d = 0;
+      if (pid->HasElement("d"))
+        d = pid->Get<double>("d");
+      double iMax = 0;
+      if (pid->HasElement("iMax"))
+        iMax = pid->Get<double>("iMax");
+      double iMin = 0;
+      if (pid->HasElement("iMin"))
+        iMin = pid->Get<double>("iMin");
+      double cmdMax = 3;
+      if (pid->HasElement("cmdMax"))
+        cmdMax = pid->Get<double>("cmdMax");
+      double cmdMin = -3;
+      if (pid->HasElement("cmdMin"))
+        cmdMin = pid->Get<double>("cmdMin");
+      left_elevon_pid_.Init(p, i, d, iMax, iMin, cmdMax, cmdMin);
+      use_left_elevon_pid_ = true;
+    }
+  }
+
+  /*if (_sdf->HasElement("left_aileron_joint")) {
+    std::string left_elevon_joint_name = _sdf->GetElement("left_aileron_joint")->Get<std::string>();
+    left_elevon_joint_ = model_->GetJoint(left_elevon_joint_name);
+    int control_index;
+    getSdfParam<int>(_sdf->GetElement("left_aileron_joint"), "input_index", control_index, -1);
+    if (control_index >= 0) {
+      joints_.at(control_index) = left_elevon_joint_;
+    }
+  }*/
+
+  if (_sdf->HasElement("right_elevon_joint")) {
+    sdf::ElementPtr right_elevon =  _sdf->GetElement("right_elevon_joint");
+    std::string right_elevon_joint_name = right_elevon->Get<std::string>();
+    right_elevon_joint_ = model_->GetJoint(right_elevon_joint_name);
+    int control_index;
+    getSdfParam<int>(right_elevon, "input_index", control_index, -1);
+    if (control_index >= 0) {
+      joints_.at(control_index) = right_elevon_joint_;
+    }
+    // setup pid to control joint
+    use_right_elevon_pid_ = false;
+    if (right_elevon->HasElement("joint_control_pid")) {
+      // setup joint control pid to control joint
+      sdf::ElementPtr pid = _sdf->GetElement("joint_control_pid");
+      double p = 0.1;
+      if (pid->HasElement("p"))
+        p = pid->Get<double>("p");
+      double i = 0;
+      if (pid->HasElement("i"))
+        i = pid->Get<double>("i");
+      double d = 0;
+      if (pid->HasElement("d"))
+        d = pid->Get<double>("d");
+      double iMax = 0;
+      if (pid->HasElement("iMax"))
+        iMax = pid->Get<double>("iMax");
+      double iMin = 0;
+      if (pid->HasElement("iMin"))
+        iMin = pid->Get<double>("iMin");
+      double cmdMax = 3;
+      if (pid->HasElement("cmdMax"))
+        cmdMax = pid->Get<double>("cmdMax");
+      double cmdMin = -3;
+      if (pid->HasElement("cmdMin"))
+        cmdMin = pid->Get<double>("cmdMin");
+      right_elevon_pid_.Init(p, i, d, iMax, iMin, cmdMax, cmdMin);
+      use_right_elevon_pid_ = true;
+    }
+  }
+
+  /*if (_sdf->HasElement("right_aileron_joint")) {
+    std::string right_elevon_joint_name = _sdf->GetElement("right_aileron_joint")->Get<std::string>();
+    right_elevon_joint_ = model_->GetJoint(right_elevon_joint_name);
+    int control_index;
+    getSdfParam<int>(_sdf->GetElement("right_aileron_joint"), "input_index", control_index, -1);
+    if (control_index >= 0) {
+      joints_.at(control_index) = right_elevon_joint_;
+    }
+  }
+
+  if (_sdf->HasElement("elevator_joint")) {
+    sdf::ElementPtr elevator =  _sdf->GetElement("elevator_joint");
+    std::string elevator_joint_name = elevator->Get<std::string>();
+    elevator_joint_ = model_->GetJoint(elevator_joint_name);
+    int control_index;
+    getSdfParam<int>(elevator, "input_index", control_index, -1);
+    if (control_index >= 0) {
+      joints_.at(control_index) = elevator_joint_;
+    }
+    // setup pid to control joint
+    use_elevator_pid_ = false;
+    if (elevator->HasElement("joint_control_pid")) {
+      // setup joint control pid to control joint
+      sdf::ElementPtr pid = _sdf->GetElement("joint_control_pid");
+      double p = 0.1;
+      if (pid->HasElement("p"))
+        p = pid->Get<double>("p");
+      double i = 0;
+      if (pid->HasElement("i"))
+        i = pid->Get<double>("i");
+      double d = 0;
+      if (pid->HasElement("d"))
+        d = pid->Get<double>("d");
+      double iMax = 0;
+      if (pid->HasElement("iMax"))
+        iMax = pid->Get<double>("iMax");
+      double iMin = 0;
+      if (pid->HasElement("iMin"))
+        iMin = pid->Get<double>("iMin");
+      double cmdMax = 3;
+      if (pid->HasElement("cmdMax"))
+        cmdMax = pid->Get<double>("cmdMax");
+      double cmdMin = -3;
+      if (pid->HasElement("cmdMin"))
+        cmdMin = pid->Get<double>("cmdMin");
+      elevator_pid_.Init(p, i, d, iMax, iMin, cmdMax, cmdMin);
+      use_elevator_pid_ = true;
+    }
+  }
+
+  if (_sdf->HasElement("propeller_joint")) {
+    sdf::ElementPtr propeller =  _sdf->GetElement("propeller_joint");
+    std::string propeller_joint_name = propeller->Get<std::string>();
+    propeller_joint_ = model_->GetJoint(propeller_joint_name);
+    int control_index;
+    getSdfParam<int>(propeller, "input_index", control_index, -1);
+    if (control_index >= 0) {
+      joints_.at(control_index) = propeller_joint_;
+    }
+    use_propeller_pid_ = false;
+    // setup joint control pid to control joint
+    if (propeller->HasElement("joint_control_pid"))
+    {
+      sdf::ElementPtr pid = _sdf->GetElement("joint_control_pid");
+      double p = 0.1;
+      if (pid->HasElement("p"))
+        p = pid->Get<double>("p");
+      double i = 0;
+      if (pid->HasElement("i"))
+        i = pid->Get<double>("i");
+      double d = 0;
+      if (pid->HasElement("d"))
+        d = pid->Get<double>("d");
+      double iMax = 0;
+      if (pid->HasElement("iMax"))
+        iMax = pid->Get<double>("iMax");
+      double iMin = 0;
+      if (pid->HasElement("iMin"))
+        iMin = pid->Get<double>("iMin");
+      double cmdMax = 3;
+      if (pid->HasElement("cmdMax"))
+        cmdMax = pid->Get<double>("cmdMax");
+      double cmdMin = -3;
+      if (pid->HasElement("cmdMin"))
+        cmdMin = pid->Get<double>("cmdMin");
+      propeller_pid_.Init(p, i, d, iMax, iMin, cmdMax, cmdMin);
+      use_propeller_pid_ = true;
+    }
+  }
+
+  if (_sdf->HasElement("cgo3_mount_joint")) {
+    std::string gimbal_yaw_joint_name = _sdf->GetElement("cgo3_mount_joint")->Get<std::string>();
+    gimbal_yaw_joint_ = model_->GetJoint(gimbal_yaw_joint_name);
+    int control_index;
+    getSdfParam<int>(_sdf->GetElement("cgo3_mount_joint"), "input_index", control_index, -1);
+    if (control_index >= 0) {
+      joints_.at(control_index) = gimbal_yaw_joint_;
+    }
+  }
+
+  if (_sdf->HasElement("cgo3_vertical_arm_joint")) {
+    std::string gimbal_roll_joint_name = _sdf->GetElement("cgo3_vertical_arm_joint")->Get<std::string>();
+    gimbal_roll_joint_ = model_->GetJoint(gimbal_roll_joint_name);
+    int control_index;
+    getSdfParam<int>(_sdf->GetElement("cgo3_vertical_arm_joint"), "input_index", control_index, -1);
+    if (control_index >= 0) {
+      joints_.at(control_index) = gimbal_roll_joint_;
+    }
+  }
+
+  if (_sdf->HasElement("cgo3_horizontal_arm_joint")) {
+    std::string gimbal_pitch_joint_name = _sdf->GetElement("cgo3_horizontal_arm_joint")->Get<std::string>();
+    gimbal_pitch_joint_ = model_->GetJoint(gimbal_pitch_joint_name);
+    int control_index;
+    getSdfParam<int>(_sdf->GetElement("cgo3_horizontal_arm_joint"), "input_index", control_index, -1);
+    if (control_index >= 0) {
+      joints_.at(control_index) = gimbal_pitch_joint_;
+    }
+  }*/
+
   // Listen to the update event. This event is broadcast every
   // simulation iteration.
   updateConnection_ = event::Events::ConnectWorldUpdateBegin(
@@ -206,6 +416,10 @@ void GazeboMavlinkInterface::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf
   gravity_W_ = world_->Gravity();
 #else
   last_time_ = world_->GetSimTime();
+  last_gps_time_ = world_->GetSimTime();
+  gps_update_interval_ = 0.2;  // in seconds for 5Hz
+  gps_delay_ = 0.12; // in seconds
+  ev_update_interval_ = 0.05; // in seconds for 20Hz
   last_imu_time_ = world_->GetSimTime();
   gravity_W_ = ignitionFromGazeboMath(world_->GetPhysicsEngine()->GetGravity());
 #endif
@@ -442,6 +656,11 @@ void GazeboMavlinkInterface::ImuCallback(ImuPtr& imu_message) {
 #endif
   double dt = (current_time - last_imu_time_).Double();
 
+    // frames
+    // g - gazebo (ENU), east, north, up
+    // r - rotors imu frame (FLU), right, forward, up
+    // b - px4 (FRD) forward, right down
+    // n - px4 (NED) north, east, down
     ignition::math::Quaterniond q_gr = ignition::math::Quaterniond(
       imu_message->orientation().w(),
       imu_message->orientation().x(),
@@ -457,6 +676,19 @@ void GazeboMavlinkInterface::ImuCallback(ImuPtr& imu_message) {
     ignition::math::Vector3d pos_g = ignitionFromGazeboMath(model_->GetWorldPose().pos);
 #endif
     ignition::math::Vector3d pos_n = q_ng.RotateVector(pos_g);
+
+    /*// Fake Vicon message
+    mavlink_att_pos_mocap_t mocap_msg;
+    mocap_msg.time_usec = world_->GetSimTime().nsec * 1000.f;
+    mocap_msg.x = pos_n[0];
+    mocap_msg.y = pos_n[1];
+    mocap_msg.z = pos_n[2] - 0.17f - 0.157f;
+
+    mocap_msg.q[0] = q_nb.w;
+    mocap_msg.q[1] = q_nb.x;
+    mocap_msg.q[2] = q_nb.y;
+    mocap_msg.q[3] = q_nb.z;
+    send_mavlink_message(MAVLINK_MSG_ID_ATT_POS_MOCAP, &mocap_msg, 200);*/
 
     float declination = get_mag_declination(groundtruth_lat_rad, groundtruth_lon_rad);
 
@@ -579,8 +811,10 @@ void GazeboMavlinkInterface::ImuCallback(ImuPtr& imu_message) {
     // ground truth
 #if GAZEBO_MAJOR_VERSION >= 9
     ignition::math::Vector3d accel_true_b = q_br.RotateVector(model_->RelativeLinearAccel());
+    ignition::math::Vector3d accel_true_w = q_ng.RotateVector(model_->WorldLinearAccel());
 #else
     ignition::math::Vector3d accel_true_b = q_br.RotateVector(ignitionFromGazeboMath(model_->GetRelativeLinearAccel()));
+    ignition::math::Vector3d accel_true_w = q_ng.RotateVector(ignitionFromGazeboMath(model_->GetWorldLinearAccel()));
 #endif
 
     // send ground truth
@@ -617,9 +851,9 @@ void GazeboMavlinkInterface::ImuCallback(ImuPtr& imu_message) {
     hil_state_quat.true_airspeed = model_->GetWorldLinearVel().GetLength() * 100;  //no wind simulated
 #endif
 
-    hil_state_quat.xacc = accel_true_b.X() * 1000;
-    hil_state_quat.yacc = accel_true_b.Y() * 1000;
-    hil_state_quat.zacc = accel_true_b.Z() * 1000;
+    hil_state_quat.xacc = accel_true_w.X() * 1000;
+    hil_state_quat.yacc = accel_true_w.Y() * 1000;
+    hil_state_quat.zacc = accel_true_w.Z() * 1000;
 
     mavlink_message_t msg;
     mavlink_msg_hil_state_quaternion_encode_chan(1, 200, MAVLINK_COMM_0, &msg, &hil_state_quat);
@@ -635,7 +869,7 @@ void GazeboMavlinkInterface::ImuCallback(ImuPtr& imu_message) {
 }
 
 void GazeboMavlinkInterface::GpsCallback(GpsPtr& gps_msg){
-  // fill HIL GPS Mavlink msg
+  /*// fill HIL GPS Mavlink msg
   mavlink_hil_gps_t hil_gps_msg;
   hil_gps_msg.time_usec = gps_msg->time() * 1e6;
   hil_gps_msg.fix_type = 3;
@@ -665,7 +899,7 @@ void GazeboMavlinkInterface::GpsCallback(GpsPtr& gps_msg){
 
   else {
     send_mavlink_message(&msg);
-  }
+  }*/
 }
 
 void GazeboMavlinkInterface::GroundtruthCallback(GtPtr& groundtruth_msg){
