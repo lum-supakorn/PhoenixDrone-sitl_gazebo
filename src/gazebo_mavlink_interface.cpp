@@ -416,10 +416,10 @@ void GazeboMavlinkInterface::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf
   gravity_W_ = world_->Gravity();
 #else
   last_time_ = world_->GetSimTime();
-  last_gps_time_ = world_->GetSimTime();
+  /*last_gps_time_ = world_->GetSimTime();
   gps_update_interval_ = 0.2;  // in seconds for 5Hz
   gps_delay_ = 0.12; // in seconds
-  ev_update_interval_ = 0.05; // in seconds for 20Hz
+  ev_update_interval_ = 0.05; // in seconds for 20Hz*/
   last_imu_time_ = world_->GetSimTime();
   gravity_W_ = ignitionFromGazeboMath(world_->GetPhysicsEngine()->GetGravity());
 #endif
@@ -811,10 +811,10 @@ void GazeboMavlinkInterface::ImuCallback(ImuPtr& imu_message) {
     // ground truth
 #if GAZEBO_MAJOR_VERSION >= 9
     ignition::math::Vector3d accel_true_b = q_br.RotateVector(model_->RelativeLinearAccel());
-    ignition::math::Vector3d accel_true_w = q_ng.RotateVector(model_->WorldLinearAccel());
+    //ignition::math::Vector3d accel_true_w = q_ng.RotateVector(model_->WorldLinearAccel());
 #else
     ignition::math::Vector3d accel_true_b = q_br.RotateVector(ignitionFromGazeboMath(model_->GetRelativeLinearAccel()));
-    ignition::math::Vector3d accel_true_w = q_ng.RotateVector(ignitionFromGazeboMath(model_->GetWorldLinearAccel()));
+    //ignition::math::Vector3d accel_true_w = q_ng.RotateVector(ignitionFromGazeboMath(model_->GetWorldLinearAccel()));
 #endif
 
     // send ground truth
@@ -851,9 +851,9 @@ void GazeboMavlinkInterface::ImuCallback(ImuPtr& imu_message) {
     hil_state_quat.true_airspeed = model_->GetWorldLinearVel().GetLength() * 100;  //no wind simulated
 #endif
 
-    hil_state_quat.xacc = accel_true_w.X() * 1000;
-    hil_state_quat.yacc = accel_true_w.Y() * 1000;
-    hil_state_quat.zacc = accel_true_w.Z() * 1000;
+    hil_state_quat.xacc = accel_true_b.X() * 1000;
+    hil_state_quat.yacc = accel_true_b.Y() * 1000;
+    hil_state_quat.zacc = accel_true_b.Z() * 1000;
 
     mavlink_message_t msg;
     mavlink_msg_hil_state_quaternion_encode_chan(1, 200, MAVLINK_COMM_0, &msg, &hil_state_quat);
@@ -869,7 +869,7 @@ void GazeboMavlinkInterface::ImuCallback(ImuPtr& imu_message) {
 }
 
 void GazeboMavlinkInterface::GpsCallback(GpsPtr& gps_msg){
-  /*// fill HIL GPS Mavlink msg
+  // fill HIL GPS Mavlink msg
   mavlink_hil_gps_t hil_gps_msg;
   hil_gps_msg.time_usec = gps_msg->time() * 1e6;
   hil_gps_msg.fix_type = 3;
@@ -899,7 +899,7 @@ void GazeboMavlinkInterface::GpsCallback(GpsPtr& gps_msg){
 
   else {
     send_mavlink_message(&msg);
-  }*/
+  }
 }
 
 void GazeboMavlinkInterface::GroundtruthCallback(GtPtr& groundtruth_msg){
