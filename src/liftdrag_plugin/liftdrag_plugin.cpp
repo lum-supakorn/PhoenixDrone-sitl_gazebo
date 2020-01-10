@@ -177,7 +177,7 @@ void LiftDragPlugin::OnUpdate()
 #endif
   ignition::math::Vector3d downwash(0, 0, 15);
   ignition::math::Vector3d downwash_I = pose.Rot().RotateVector(downwash);
-  vel = vel + downwash_I; 
+  //vel = vel + downwash_I; 
   ignition::math::Vector3d velI = vel;
   velI.Normalize();
 
