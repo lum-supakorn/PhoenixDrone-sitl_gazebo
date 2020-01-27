@@ -50,7 +50,12 @@ void TSAeroPlugin::Load(physics::ModelPtr _model,
   this->world = this->model->GetWorld();
   GZ_ASSERT(this->world, "TSAeroPlugin world pointer is NULL");
 
+#if GAZEBO_MAJOR_VERSION >= 9
   this->physics = this->world->Physics();
+#else
+  this->physics = this->world->GetPhysicsEngine();
+#endif
+  
   GZ_ASSERT(this->physics, "TSAeroPlugin physics pointer is NULL");
 
   GZ_ASSERT(_sdf, "TSAeroPlugin _sdf pointer is NULL");
@@ -127,35 +132,59 @@ void TSAeroPlugin::OnUpdate()
 
   //Get propeller speed and elevon deflection
   double prop_rads = motorJoint->GetVelocity(0) * 10.0; //Multiply by slow-down sim factor
+#if GAZEBO_MAJOR_VERSION >= 9
   double delta = controlJoint->Position(0);
   // pose of body
   ignition::math::Pose3d pose = this->link->WorldPose();
-
-
-
+  
   // rotate forward and upward vectors into inertial frame
   ignition::math::Vector3d forwardI = pose.Rot().RotateVector(this->forward);
   ignition::math::Vector3d upwardI = pose.Rot().RotateVector(this->upward);
-
-
+  
   // spanwiseI: a vector normal to lift-drag-plane described in inertial frame
   ignition::math::Vector3d spanwiseI = forwardI.Cross(upwardI).Normalize();
-
+  
   // compute lift force at cp
   ignition::math::Vector3d lift = k_lift * prop_rads * prop_rads * delta * upwardI;
-
+  
   //gzerr << this->controlJoint->GetName() << "lift:" << lift << "delta:"<< delta << "\n";
   // compute drag at cp
   ignition::math::Vector3d drag = k_drag * prop_rads * prop_rads * delta * delta * -forwardI;
 
   // compute moment (torque) at cp
   ignition::math::Vector3d moment = k_pitch * prop_rads * prop_rads * delta * spanwiseI;
-
+  
   // moment arm from cg to cp in inertial plane
   ignition::math::Vector3d momentArm = pose.Rot().RotateVector(
     this->cp - this->link->GetInertial()->CoG());
   // gzerr << this->cp << " : " << this->link->GetInertial()->GetCoG() << "\n";
+#else
+  double delta = controlJoint->GetAngle(0).Radian();
+  
+  // pose of body
+  math::Pose pose = this->link->GetWorldPose();
+  
+  // rotate forward and upward vectors into inertial frame
+  math::Vector3 forwardI = pose.rot.RotateVector(this->forward);
+  math::Vector3 upwardI = pose.rot.RotateVector(this->upward);
 
+  // spanwiseI: a vector normal to lift-drag-plane described in inertial frame
+  math::Vector3 spanwiseI = forwardI.Cross(upwardI).Normalize();
+  
+  // compute lift force at cp
+  math::Vector3 lift = k_lift * prop_rads * prop_rads * delta * upwardI;
+
+  //gzerr << this->controlJoint->GetName() << "lift:" << lift << "delta:"<< delta << "\n";
+  // compute drag at cp
+  math::Vector3 drag = k_drag * prop_rads * prop_rads * delta * delta * -forwardI;
+
+  // compute moment (torque) at cp
+  math::Vector3 moment = k_pitch * prop_rads * prop_rads * delta * spanwiseI;
+
+  // moment arm from cg to cp in inertial plane
+  math::Vector3 momentArm = pose.rot.RotateVector(this->cp - this->link->GetInertial()->GetCoG());
+  // gzerr << this->cp << " : " << this->link->GetInertial()->GetCoG() << "\n";
+#endif
   // force and torque about cg in inertial frame
   ignition::math::Vector3d force = lift + drag;
   // + moment.Cross(momentArm);

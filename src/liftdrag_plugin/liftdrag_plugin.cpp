@@ -167,12 +167,14 @@ void LiftDragPlugin::OnUpdate()
 {
   GZ_ASSERT(this->link, "Link was NULL");
 
-  // pose of body
-  ignition::math::Pose3d pose = this->link->WorldPose();
+
   // get linear velocity at cp in inertial frame
 #if GAZEBO_MAJOR_VERSION >= 9
+  // pose of body
+  ignition::math::Pose3d pose = this->link->WorldPose();
   ignition::math::Vector3d vel = this->link->WorldLinearVel(this->cp);
 #else
+  ignition::math::Pose3d pose = ignitionFromGazeboMath(this->link->GetWorldPose());
   ignition::math::Vector3d vel = ignitionFromGazeboMath(this->link->GetWorldLinearVel(this->cp));
 #endif
   ignition::math::Vector3d downwash(0, 0, 15);
