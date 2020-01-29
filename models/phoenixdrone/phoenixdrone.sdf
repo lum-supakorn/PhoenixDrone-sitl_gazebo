@@ -376,6 +376,18 @@
         <robotNamespace></robotNamespace>
         <gpsNoise>true</gpsNoise>
     </plugin>
+    <plugin name='wind_plugin' filename='librotors_gazebo_wind_plugin.so'>
+      <frameId>base_link</frameId>
+      <linkName>base_link</linkName>
+      <robotNamespace/>
+      <xyzOffset>1 0 0</xyzOffset>
+      <windDirection>0 1 0</windDirection>
+      <windForceMean>0.0</windForceMean>
+      <windGustDirection>0 1 0</windGustDirection>
+      <windGustDuration>1</windGustDuration>
+      <windGustStart>10</windGustStart>
+      <windGustForceMean>1</windGustForceMean>
+    </plugin>
     <plugin name='mavlink_interface' filename='librotors_gazebo_mavlink_interface.so'>
       <robotNamespace></robotNamespace>
       <imuSubTopic>/imu</imuSubTopic>

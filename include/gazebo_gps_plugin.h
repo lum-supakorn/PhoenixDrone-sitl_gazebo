@@ -86,6 +86,7 @@ private:
   // Zurich Irchel Park: 47.397742, 8.545594, 488m
   // Seattle downtown (15 deg declination): 47.592182, -122.316031, 86m
   // Moscow downtown: 55.753395, 37.625427, 155m
+  // Mini RC Airfield: 13.895977, 100.779161, 1m
 
   // The home position can be specified using the environment variables:
   // PX4_HOME_LAT, PX4_HOME_LON, and PX4_HOME_ALT

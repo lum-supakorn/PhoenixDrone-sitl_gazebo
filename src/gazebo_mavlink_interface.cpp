@@ -621,7 +621,7 @@ void GazeboMavlinkInterface::send_mavlink_message(const mavlink_message_t *messa
       lock_guard lock(mutex);
 
       if (tx_q.size() >= MAX_TXQ_SIZE) {
-//         gzwarn << "TX queue overflow. \n";
+        // gzwarn << "TX queue overflow. \n";
       }
       tx_q.emplace_back(message);
     }

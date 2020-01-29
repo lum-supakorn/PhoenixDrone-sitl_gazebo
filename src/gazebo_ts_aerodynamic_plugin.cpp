@@ -132,7 +132,7 @@ void TSAeroPlugin::OnUpdate()
 
   //Get propeller speed and elevon deflection
   double prop_rads = motorJoint->GetVelocity(0) * 10.0; //Multiply by slow-down sim factor
-#if GAZEBO_MAJOR_VERSION >= 9
+//#if GAZEBO_MAJOR_VERSION >= 9
   double delta = controlJoint->Position(0);
   // pose of body
   ignition::math::Pose3d pose = this->link->WorldPose();
@@ -158,7 +158,7 @@ void TSAeroPlugin::OnUpdate()
   ignition::math::Vector3d momentArm = pose.Rot().RotateVector(
     this->cp - this->link->GetInertial()->CoG());
   // gzerr << this->cp << " : " << this->link->GetInertial()->GetCoG() << "\n";
-#else
+/*#else
   double delta = controlJoint->GetAngle(0).Radian();
   
   // pose of body
@@ -184,7 +184,7 @@ void TSAeroPlugin::OnUpdate()
   // moment arm from cg to cp in inertial plane
   math::Vector3 momentArm = pose.rot.RotateVector(this->cp - this->link->GetInertial()->GetCoG());
   // gzerr << this->cp << " : " << this->link->GetInertial()->GetCoG() << "\n";
-#endif
+#endif*/
   // force and torque about cg in inertial frame
   ignition::math::Vector3d force = lift + drag;
   // + moment.Cross(momentArm);
