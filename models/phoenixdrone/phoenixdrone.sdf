@@ -258,8 +258,8 @@
         <xyz>0 1 0</xyz>
         <limit>
           <!-- -30/+30 deg. -->
-          <lower>-1.05</lower>
-          <upper>1.05</upper>
+          <lower>-0.53</lower>
+          <upper>0.53</upper>
         </limit>
         <dynamics>
           <damping>1.000</damping>
@@ -303,9 +303,7 @@
       <upward>1 0 0</upward>
       <link_name>base_link</link_name>
       <motor_joint_name>rotor_left_joint</motor_joint_name>
-      <control_joint_name>
-        left_elevon_joint
-      </control_joint_name>
+      <control_joint_name>left_elevon_joint</control_joint_name>
     </plugin>
     <plugin name="right_wing" filename="libgazebo_ts_aerodynamic_plugin.so">
       <k_lift>0.00000348</k_lift>
@@ -316,9 +314,7 @@
       <upward>1 0 0</upward>
       <link_name>base_link</link_name>
       <motor_joint_name>rotor_right_joint</motor_joint_name>
-      <control_joint_name>
-        right_elevon_joint
-      </control_joint_name>
+      <control_joint_name>right_elevon_joint</control_joint_name>
     </plugin>
     <!--plugin name='rosbag' filename='librotors_gazebo_multirotor_base_plugin.so'>
       <robotNamespace></robotNamespace>
@@ -336,7 +332,7 @@
       <motorConstant>7.864e-06</motorConstant>
       <momentConstant>0.023</momentConstant>
       <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
-      <motorNumber>1</motorNumber>
+      <motorNumber>0</motorNumber>
       <rotorDragCoefficient>0</rotorDragCoefficient>
       <rollingMomentCoefficient>0</rollingMomentCoefficient>
       <motorSpeedPubTopic>/motor_speed/1</motorSpeedPubTopic>
@@ -353,7 +349,7 @@
       <motorConstant>7.864e-06</motorConstant>
       <momentConstant>0.023</momentConstant>
       <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
-      <motorNumber>0</motorNumber>
+      <motorNumber>1</motorNumber>
       <rotorDragCoefficient>0</rotorDragCoefficient>
       <rollingMomentCoefficient>0</rollingMomentCoefficient>
       <motorSpeedPubTopic>/motor_speed/0</motorSpeedPubTopic>
@@ -384,9 +380,9 @@
       <windDirection>0 1 0</windDirection>
       <windForceMean>0.0</windForceMean>
       <windGustDirection>0 1 0</windGustDirection>
-      <windGustDuration>1</windGustDuration>
-      <windGustStart>10</windGustStart>
-      <windGustForceMean>1</windGustForceMean>
+      <windGustDuration>0</windGustDuration>
+      <windGustStart>0</windGustStart>
+      <windGustForceMean>0</windGustForceMean>
     </plugin>
     <plugin name='mavlink_interface' filename='librotors_gazebo_mavlink_interface.so'>
       <robotNamespace></robotNamespace>
@@ -405,18 +401,18 @@
       <motorSpeedCommandPubTopic>/gazebo/command/motor_speed</motorSpeedCommandPubTopic>
       <control_channels>
         <channel name="rotor_right">
-          <input_index>0</input_index>
+          <input_index>1</input_index>
           <input_offset>0</input_offset>
-          <input_scaling>800</input_scaling>
+          <input_scaling>700</input_scaling>
           <zero_position_disarmed>0</zero_position_disarmed>
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>velocity</joint_control_type>
           <joint_name>rotor_right_joint</joint_name>
         </channel>
         <channel name="rotor_left">
-          <input_index>1</input_index>
+          <input_index>0</input_index>
           <input_offset>0</input_offset>
-          <input_scaling>800</input_scaling>
+          <input_scaling>700</input_scaling>
           <zero_position_disarmed>0</zero_position_disarmed>
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>velocity</joint_control_type>
@@ -425,7 +421,7 @@
         <channel name="right_elevon">
           <input_index>4</input_index>
           <input_offset>0</input_offset>
-          <input_scaling>-0.017444</input_scaling>
+          <input_scaling>1.7444</input_scaling>
           <zero_position_disarmed>0</zero_position_disarmed>
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>position_kinematic</joint_control_type>
@@ -434,7 +430,7 @@
         <channel name="left_elevon">
           <input_index>5</input_index>
           <input_offset>0</input_offset>
-          <input_scaling>-0.017444</input_scaling>
+          <input_scaling>-1.7444</input_scaling>
           <zero_position_disarmed>0</zero_position_disarmed>
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>position_kinematic</joint_control_type>
