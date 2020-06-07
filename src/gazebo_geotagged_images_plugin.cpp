@@ -22,8 +22,8 @@
 #include <iostream>
 #include <boost/filesystem.hpp>
 
-#include <cv.h>
-#include <highgui.h>
+// #include <cv.h>
+#include <opencv2/highgui.hpp>
 
 #include <opencv2/opencv.hpp>
 
@@ -192,7 +192,7 @@ void GeotaggedImagesPlugin::OnNewFrame(const unsigned char * image)
     Mat frame    = Mat(_height, _width, CV_8UC3);
     Mat frameBGR = Mat(_height, _width, CV_8UC3);
     frame.data   = (uchar*)image; //frame has not the right color format yet -> convert
-    cvtColor(frame, frameBGR, CV_RGB2BGR);
+    cvtColor(frame, frameBGR, cv::COLOR_RGB2BGR);
 
     char file_name[256];
     snprintf(file_name, sizeof(file_name), "%s/DSC%05i.jpg", _storageDir.c_str(), _imageCounter);
