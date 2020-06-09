@@ -377,7 +377,7 @@
         <pose>0 -0.3 -0.3 0.00 0 0.0</pose>
       </inertial>
     </link>
-    <link name="elevator">
+    <!-- <link name="elevator">
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -390,7 +390,7 @@
         </inertia>
         <pose>0 0 -0.5 0.00 0 0.0</pose>
       </inertial>
-    </link>
+    </link> -->
     <link name="rudder">
       <inertial>
         <mass>0.00000001</mass>
@@ -447,14 +447,13 @@
         </ode>
       </physics>
     </joint>
-    <joint name='elevator_joint' type='revolute'>
+    <!-- <joint name='elevator_joint' type='revolute'>
       <parent>base_link</parent>
       <child>elevator</child>
       <pose>0 0 -0.5 0.00 0 0.0</pose>
       <axis>
         <xyz>0 1 0</xyz>
         <limit>
-          <!-- -30/+30 deg. -->
           <lower>-0.53</lower>
           <upper>0.53</upper>
         </limit>
@@ -467,7 +466,7 @@
           <implicit_spring_damper>1</implicit_spring_damper>
         </ode>
       </physics>
-    </joint>
+    </joint> -->
     <joint name='rudder_joint' type='revolute'>
       <parent>base_link</parent>
       <child>rudder</child>
@@ -475,7 +474,7 @@
       <axis>
         <xyz>1 0 0</xyz>
         <limit>
-          <!-- -30/+30 deg. -->
+          <!-- -Fixed -->
           <lower>-0.01</lower>
           <upper>0.01</upper>
         </limit>
@@ -529,7 +528,7 @@
       </control_joint_name>
       <control_joint_rad_to_cl>-0.5</control_joint_rad_to_cl>
     </plugin>
-    <plugin name="elevator" filename="libLiftDragPlugin.so">
+    <!-- <plugin name="elevator" filename="libLiftDragPlugin.so">
       <a0>0.05984281113</a0>
       <cla>4.752798721</cla>
       <cda>0.6417112299</cda>
@@ -547,7 +546,7 @@
       <control_joint_name>
         elevator_joint
       </control_joint_name>
-    </plugin>
+    </plugin> -->
     <plugin name="rudder" filename="libLiftDragPlugin.so">
       <a0>0.0</a0>
       <cla>4.752798721</cla>
@@ -724,7 +723,7 @@
           <joint_control_type>position_kinematic</joint_control_type>
           <joint_name>right_elevon_joint</joint_name>
         </channel>
-        <channel name="elevator">
+        <!-- <channel name="elevator">
           <input_index>7</input_index>
           <input_offset>0</input_offset>
           <input_scaling>1</input_scaling>
@@ -732,7 +731,7 @@
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>position_kinematic</joint_control_type>
           <joint_name>elevator_joint</joint_name>
-        </channel>
+        </channel> -->
       </control_channels>
       <left_elevon_joint>
         left_elevon_joint
@@ -740,9 +739,9 @@
       <right_elevon_joint>
         right_elevon_joint
       </right_elevon_joint>
-      <elevator_joint>
+      <!-- <elevator_joint>
         elevator_joint
-      </elevator_joint>
+      </elevator_joint> -->
     </plugin>
     <static>0</static>
   </model>
