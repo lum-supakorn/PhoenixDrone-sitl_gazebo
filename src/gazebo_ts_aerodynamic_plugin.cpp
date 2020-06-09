@@ -144,14 +144,14 @@ void TSAeroPlugin::OnUpdate()
   ignition::math::Vector3d spanwiseI = forwardI.Cross(upwardI).Normalize();
   
   // compute lift force at cp
-  ignition::math::Vector3d lift = k_lift * prop_rads * prop_rads * delta * upwardI;
+  ignition::math::Vector3d lift = k_lift * prop_rads * prop_rads * -delta * upwardI;
   
   //gzerr << this->controlJoint->GetName() << "lift:" << lift << "delta:"<< delta << "\n";
   // compute drag at cp
   ignition::math::Vector3d drag = k_drag * prop_rads * prop_rads * delta * delta * -forwardI;
 
   // compute moment (torque) at cp
-  ignition::math::Vector3d moment = k_pitch * prop_rads * prop_rads * delta * spanwiseI;
+  ignition::math::Vector3d moment = k_pitch * prop_rads * prop_rads * -delta * spanwiseI;
   
   // moment arm from cg to cp in inertial plane
   ignition::math::Vector3d momentArm = pose.Rot().RotateVector(
@@ -169,7 +169,7 @@ void TSAeroPlugin::OnUpdate()
   //      this->link->GetName() == "wing_2") &&
   //     (vel.GetLength() > 50.0 &&
   //      vel.GetLength() < 50.0))
-  if (0)
+  if (1)
   {
 //    gzdbg << "=============================\n";
 //    gzdbg << "sensor: [" << this->GetHandle() << "]\n";
@@ -193,6 +193,7 @@ void TSAeroPlugin::OnUpdate()
 //    gzdbg << "cp momentArm: " << momentArm << "\n";
 //    gzdbg << "force: " << force << "\n";
 //    gzdbg << "torque: " << torque << "\n";
+      gzdbg << "upwardI: [" << upwardI << "]\n";
   }
 
   // Correct for nan or inf

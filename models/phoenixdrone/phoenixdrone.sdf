@@ -300,7 +300,7 @@
       <k_pitch>-0.000000344</k_pitch>
       <cp>0 0.195 0.036</cp>
       <forward>0 0 1</forward>
-      <upward>1 0 0</upward>
+      <upward>-1 0 0</upward>
       <link_name>base_link</link_name>
       <motor_joint_name>rotor_left_joint</motor_joint_name>
       <control_joint_name>left_elevon_joint</control_joint_name>
@@ -311,7 +311,7 @@
       <k_pitch>-0.000000344</k_pitch>
       <cp>0 -0.195 0.036</cp>
       <forward>0 0 1</forward>
-      <upward>1 0 0</upward>
+      <upward>-1 0 0</upward>
       <link_name>base_link</link_name>
       <motor_joint_name>rotor_right_joint</motor_joint_name>
       <control_joint_name>right_elevon_joint</control_joint_name>
@@ -421,7 +421,7 @@
         <channel name="right_elevon">
           <input_index>4</input_index>
           <input_offset>0</input_offset>
-          <input_scaling>1.7444</input_scaling>
+          <input_scaling>0.017444</input_scaling>
           <zero_position_disarmed>0</zero_position_disarmed>
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>position_kinematic</joint_control_type>
@@ -430,7 +430,7 @@
         <channel name="left_elevon">
           <input_index>5</input_index>
           <input_offset>0</input_offset>
-          <input_scaling>-1.7444</input_scaling>
+          <input_scaling>-0.017444</input_scaling>
           <zero_position_disarmed>0</zero_position_disarmed>
           <zero_position_armed>0</zero_position_armed>
           <joint_control_type>position_kinematic</joint_control_type>
