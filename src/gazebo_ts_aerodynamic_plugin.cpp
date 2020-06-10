@@ -186,14 +186,14 @@ void TSAeroPlugin::OnUpdate()
 //    gzdbg << "Span direction (normal to LD plane): " << spanwiseI << "\n";
 //    gzdbg << "sweep: " << this->sweep << "\n";
 //    gzdbg << "alpha: " << this->alpha << "\n";
-//    gzdbg << "lift: " << lift << "\n";
+   gzdbg << "slipstream lift: [" << lift << "]\n";
 //    gzdbg << "drag: " << drag << " cd: "
 //          << cd << " cda: " << this->cda << "\n";
 //    gzdbg << "moment: " << moment << "\n";
 //    gzdbg << "cp momentArm: " << momentArm << "\n";
 //    gzdbg << "force: " << force << "\n";
 //    gzdbg << "torque: " << torque << "\n";
-      gzdbg << "upwardI: [" << upwardI << "]\n";
+      // gzdbg << "upwardI: [" << upwardI << "]\n";
   }
 
   // Correct for nan or inf
