@@ -225,7 +225,13 @@
 		      <box>
 		        <size> 0.015 0.22 0.07347</size>
 		      </box>
-		    </geometry>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Red</name>
+            <uri>__default__</uri>
+          </script>
+        </material>
       </visual>
     </link>
     <link name="right_elevon">
@@ -247,7 +253,13 @@
 	  	    <box>
 	    	    <size> 0.015  0.22 0.07347</size>
 	  	    </box>
-		    </geometry>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Green</name>
+            <uri>__default__</uri>
+          </script>
+        </material>
       </visual>
     </link>
     <joint name='left_elevon_joint' type='revolute'>
