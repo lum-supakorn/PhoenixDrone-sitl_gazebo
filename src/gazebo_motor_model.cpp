@@ -193,7 +193,7 @@ void GazeboMotorModel::UpdateForcesAndMoments() {
   double real_motor_velocity = motor_rot_vel_ * rotor_velocity_slowdown_sim_;
   double force = real_motor_velocity * real_motor_velocity * motor_constant_;
 
-  gzdbg << "prop force: [" << force << "]\n";
+  // gzdbg << "prop force: [" << force << "]\n";
 
   // TODO(ff): remove this?
   // Code from sitl_gazebo version of GazeboMotorModel.
