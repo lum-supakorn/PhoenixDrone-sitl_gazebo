@@ -169,7 +169,7 @@ void TSAeroPlugin::OnUpdate()
   //      this->link->GetName() == "wing_2") &&
   //     (vel.GetLength() > 50.0 &&
   //      vel.GetLength() < 50.0))
-  if (1)
+  if (0)
   {
 //    gzdbg << "=============================\n";
 //    gzdbg << "sensor: [" << this->GetHandle() << "]\n";
