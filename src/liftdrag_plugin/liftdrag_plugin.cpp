@@ -54,6 +54,9 @@ LiftDragPlugin::LiftDragPlugin() : cla(1.0), cda(0.01), cma(0.01), rho(1.2041)
 
   /// how much to change CL per every radian of the control joint value
   this->controlJointRadToCL = 4.0;
+
+  // How much Cm changes with a change in control surface deflection angle
+  this->cm_delta = 0.0;
 }
 
 /////////////////////////////////////////////////
@@ -96,6 +99,9 @@ void LiftDragPlugin::Load(physics::ModelPtr _model,
 
   if (_sdf->HasElement("cma"))
     this->cma = _sdf->Get<double>("cma");
+
+  if (_sdf->HasElement("cm_delta"))
+        this->cm_delta = _sdf->Get<double>("cm_delta");
 
   if (_sdf->HasElement("alpha_stall"))
     this->alphaStall = _sdf->Get<double>("alpha_stall");
@@ -302,12 +308,13 @@ void LiftDragPlugin::OnUpdate()
     cl = this->cla * this->alpha * cosSweepAngle;
 
   // modify cl per control joint value
+  double controlAngle;
   if (this->controlJoint)
   {
 #if GAZEBO_MAJOR_VERSION >= 9
-    double controlAngle = this->controlJoint->Position(0);
+    controlAngle = this->controlJoint->Position(0);
 #else
-    double controlAngle = this->controlJoint->GetAngle(0).Radian();
+    controlAngle = this->controlJoint->GetAngle(0).Radian();
 #endif
     cl = cl + this->controlJointRadToCL * controlAngle;
     /// \TODO: also change cm and cd
@@ -360,9 +367,8 @@ void LiftDragPlugin::OnUpdate()
   else
     cm = this->cma * this->alpha * cosSweepAngle;
 
-  /// \TODO: implement cm
-  /// for now, reset cm to zero, as cm needs testing
-  cm = 0.0;
+  // Take into account the effect of control surface deflection angle to Cm
+  cm += this->cm_delta * controlAngle;
 
   // compute moment (torque) at cp
   ignition::math::Vector3d moment = cm * q * this->area * momentDirection;

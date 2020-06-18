@@ -69,6 +69,9 @@ namespace gazebo
     /// where q (dynamic pressure) = 0.5 * rho * v^2
     protected: double cma;
 
+    /// \breif Coefficient of Moment / control surface deflection angle slope
+    protected: double cm_delta;
+
     /// \brief angle of attach when airfoil stalls
     protected: double alphaStall;
 
