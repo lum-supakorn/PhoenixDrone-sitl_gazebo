@@ -37,11 +37,11 @@
         </surface>
       </collision>
       <visual name='base_link_visual'>
-        <pose>0 0 0.27 0 -1.57075 0</pose>
+        <pose>0 0 0.68 0 1.5708 3.14159</pose>
         <geometry>
           <mesh>
-            <scale>0.0006 0.0007 0.0007</scale>
-            <uri>model://phoenixdrone/meshes/pacflyer_s100_mockup.dae</uri>
+            <scale>0.1 0.1 0.1</scale>
+            <uri>model://phoenixdrone/meshes/bat.dae</uri>
           </mesh>
         </geometry>
         <material>
@@ -89,7 +89,7 @@
       </axis>
     </joint>
     <link name='rotor_left'>
-      <pose>0.0 -0.195 0.4685 0 -0 0</pose>
+      <pose>0.0 -0.35 0.85 0 -0 0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -155,7 +155,7 @@
       </axis>
     </joint>
     <link name='rotor_right'>
-      <pose>0.0 0.195 0.4685 0 -0 0</pose>
+      <pose>0.0 0.35 0.85 0 -0 0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -249,7 +249,7 @@
       </axis>
     </joint>
     <link name="left_elevon">
-      <pose>0 0.195 0.2365 0 0 0</pose>
+      <pose>0 0.35 0.2365 0 0 0</pose>
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
@@ -277,7 +277,7 @@
       </visual>
     </link>
     <link name="right_elevon">
-      <pose>0 -0.195 0.2365 0 0 0</pose>
+      <pose>0 -0.35 0.2365 0 0 0</pose>
       <inertial>
         <mass>0.00000001</mass>
         <inertia>
